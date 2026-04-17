@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/context";
 import { useListMessages, useSendMessage, getListMessagesQueryKey, useGetArtisan } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, UserCircle2 } from "lucide-react";
+import { Send, UserCircle2, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Chat() {
