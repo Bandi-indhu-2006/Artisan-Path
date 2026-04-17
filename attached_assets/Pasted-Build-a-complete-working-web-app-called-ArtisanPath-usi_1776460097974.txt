@@ -1,0 +1,171 @@
+Build a complete working web app called "ArtisanPath" using Node.js + Express in a SINGLE file: index.js.
+
+=====================
+CORE OBJECTIVE
+=====================
+A mobile-first AI-assisted platform that helps artisans:
+- Sell products
+- Teach skills
+- Discover local events
+- Get real-world price suggestions
+- Showcase their work visually
+
+AI should act as a SUPPORT system using structured + realistic data (NOT random outputs).
+
+=====================
+NEW FEATURES TO IMPLEMENT
+=====================
+
+1. 📅 EVENTS SYSTEM (NOVEMBER FOCUS)
+- Add an "Events" section in the navbar
+- Display upcoming artisan events (default include November events)
+- Each event should have:
+  - Title
+  - Location (city-based)
+  - Date
+  - Description
+  - "Book Now" button
+
+- Users can:
+  → Book an event
+  → Add a new event (if they are an artisan)
+
+- Add Event Form Fields:
+  - Event Name
+  - City
+  - Date
+  - Description
+  - Seats Available
+
+- Store events in in-memory array (no DB required)
+
+---
+
+2. 👩‍🏫 TEACHERS / ARTISAN INSTRUCTORS
+- During registration:
+  Add checkbox: "Interested in Teaching"
+
+- If selected:
+  → Save artisan in "Teachers List"
+
+- Add Navbar Item: "View Teachers"
+
+- Teachers Page should show:
+  - Name
+  - Skill/Craft
+  - Location
+  - Contact Info
+
+---
+
+3. 👤 PROFILE SYSTEM
+- Add "Profile" in Navbar
+
+- Artisan can:
+  → Create profile
+  → Upload images of their work (NOT URL input)
+
+- IMPORTANT:
+  - Use file upload (multer or base64)
+  - Show preview of uploaded images
+  - Store locally or in memory
+
+- Profile Fields:
+  - Name
+  - Craft Type
+  - Description
+  - Images Gallery
+
+---
+
+4. 💰 REAL-WORLD PRICE SUGGESTION (IMPORTANT)
+Replace fake/random pricing with realistic logic:
+
+- When user uploads or describes a product:
+  → Generate price suggestion based on:
+    - Category (e.g., blanket, pottery, jewelry)
+    - Material
+    - Size
+    - Market comparison
+
+- Use static dataset like:
+  {
+    "blanket": [500, 1500],
+    "handmade bag": [300, 1200],
+    "pottery": [200, 800]
+  }
+
+- Output:
+  → Suggested Price Range
+  → Recommended Selling Price
+
+---
+
+5. 🖼 IMAGE-BASED RECOGNITION (SIMULATED AI)
+- When user uploads image:
+  → Detect product type (mock logic using filename or keywords)
+
+Example:
+- "blanket.jpg" → Suggest "Handmade Blanket"
+- "cover.jpg" → Suggest "Laptop Cover"
+
+- Based on detection:
+  → Auto-fill category
+  → Show price suggestion
+
+---
+
+6. 🌍 TRANSLATION SUPPORT
+- Add language toggle (English / Telugu / Hindi)
+
+- Translate:
+  - Buttons
+  - Labels
+  - Basic UI text
+
+- Use simple JSON dictionary (no API needed)
+
+---
+
+7. 📊 DASHBOARD IMPROVEMENT
+- Clean UI with sections:
+  - My Products
+  - My Events
+  - My Bookings
+  - Teaching Requests
+
+- Use card-based layout
+- Mobile-first responsive design
+
+---
+
+8. 🧠 SMART UX IMPROVEMENTS
+- Pre-fill forms wherever possible
+- Add success/error messages
+- Add loading states
+- Keep UI simple for older artisans
+
+---
+
+=====================
+TECH REQUIREMENTS
+=====================
+- Single file: index.js
+- Node.js + Express
+- Use EJS or plain HTML templates inside routes
+- No external DB (use arrays/objects)
+- Use minimal CSS for clean UI
+- Must run with: node index.js
+
+---
+
+=====================
+GOAL
+=====================
+Make the app:
+✔ Practical
+✔ Simple for rural artisans
+✔ Real-world useful
+✔ Hackathon winning level
+
+Focus on clarity, usability, and realistic features — not complexity.

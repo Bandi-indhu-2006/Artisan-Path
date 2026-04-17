@@ -40,10 +40,15 @@ Tables: users, artisans, products, courses, events, event_bookings, chat_message
 2. **Artisan Mode**: Upload products with voice description, manage courses, register for events, dashboard
 3. **Voice Assistant**: Product detail page reads description aloud in selected language
 4. **Voice Input**: Artisan dashboard uses SpeechRecognition for product description
-5. **Multilingual**: Language switcher affecting UI text and product descriptions
+5. **Multilingual**: Language switcher (EN/HI/TE/TA) affecting UI text across all pages
 6. **Rating System**: 1-5 star ratings with reviews, items sorted by rating
 7. **Events**: Book events (users) or register to showcase (artisans)
 8. **Chat**: Real-time chat between users and artisans
+9. **Artisan Profile Page** (`/profile`): Gallery of uploaded craft photos (base64), bio, editable — stored in localStorage
+10. **Image Upload for Products**: File picker converts to base64; AI-simulated craft type detection from filename keywords auto-fills category and subcategory
+11. **Price Suggestion Widget**: Shows recommended price range per category (Painting ₹1500–8000, Handloom ₹2000–15000, Pottery ₹500–3000) inside product upload form
+12. **Dashboard Tabs Expanded**: My Crafts, My Courses, My Events (upcoming exhibitions), Teaching Requests (students who want to learn)
+13. **Desktop Navigation**: Full nav bar visible on desktop with all section links
 
 ## Categories
 

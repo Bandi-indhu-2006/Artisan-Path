@@ -14,6 +14,7 @@ import ProductDetail from "@/pages/product";
 import Teachers from "@/pages/teachers";
 import Chat from "@/pages/chat";
 import ArtisanDashboard from "@/pages/artisan-dashboard";
+import Profile from "@/pages/profile";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/orders" component={Orders} />
       <Route path="/chat" component={Chat} />
       <Route path="/artisan-dashboard" component={ArtisanDashboard} />
+      <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
     </Switch>
   );
