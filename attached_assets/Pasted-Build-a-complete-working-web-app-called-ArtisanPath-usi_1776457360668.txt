@@ -1,0 +1,294 @@
+Build a complete working web app called **"ArtisanPath"** using Node.js + Express in a SINGLE file: index.js.
+
+=====================
+CORE OBJECTIVE
+==============
+
+Build a mobile-first AI-assisted platform that allows:
+
+ARTISANS:
+
+* Upload products
+* Describe products using voice
+* Teach skills
+* Participate in events
+
+USERS:
+
+* Buy products
+* Learn courses
+* Chat with artisans
+* Attend/book events
+
+IMPORTANT:
+AI must act only as a SUPPORT system using structured data.
+Do NOT claim real-time predictions.
+
+=====================
+STRICT SYSTEM RULES
+===================
+
+✔ Only 2 predefined products
+✔ City must be dropdown only
+✔ Teaching must be optional checkbox
+✔ Images must match product
+✔ FULL multilingual system (UI + AI + chat)
+✔ Must include delete feature
+✔ Must include chat system
+✔ Voice input is mandatory (no manual description)
+
+=====================
+TECH RULES
+==========
+
+* Node.js + Express
+* Single file: index.js
+* app.get("/") must render full HTML
+* Include HTML + CSS + JS in same file
+* Fully runnable
+
+=====================
+LOGIN SYSTEM
+============
+
+ARTISAN:
+
+* Name
+* Category (Painting / Handloom / Pottery)
+* City (Dropdown only)
+* Checkbox: "Interested in Teaching"
+
+USER:
+
+* Name
+* Phone
+* City (Dropdown only)
+
+VALID CITIES:
+["Hyderabad","Mumbai","Delhi","Jaipur","Chennai","Bangalore"]
+
+=====================
+PRODUCT SYSTEM
+==============
+
+ONLY 2 PRODUCTS:
+
+1. Warli Painting
+   Image: https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5
+
+2. Kundan Necklace
+   Image: https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0
+
+✔ Add BUY button
+✔ After purchase:
+
+* Allow rating
+* Allow review
+
+=====================
+CATEGORY SYSTEM
+===============
+
+Painting:
+
+* Warli
+* Madhubani
+* Tanjore
+* Gond
+* Pattachitra
+
+Handloom (IMPORTANT):
+
+* Kanchipuram Silk Saree
+* Banarasi Silk Saree
+* Cotton Saree
+* Kalamkari Saree
+* Ikat Saree
+
+Pottery:
+
+* Clay Pot
+* Terracotta
+* Ceramic Vase
+* Earthen Lamp
+* Decorative Pot
+
+=====================
+VOICE INPUT (MANDATORY)
+=======================
+
+✔ Artisan must describe product using voice
+✔ Convert voice → text
+✔ Translate to selected language
+✔ Display description based on selected language
+
+(Mock allowed)
+
+=====================
+PRICING SYSTEM
+==============
+
+Use dataset:
+
+{
+"products": {
+"silk_saree": { "base_price": 5000 },
+"painting": { "base_price": 2000 }
+},
+"trends": {
+"eco_products": "high",
+"traditional": "medium"
+},
+"locations": {
+"Hyderabad": 1.1,
+"Mumbai": 1.2,
+"Delhi": 1.15
+}
+}
+
+Formula:
+Estimated Price = Base Price × Trend Factor × Location Factor
+
+✔ Show price range
+✔ Show explanation
+✔ Show note:
+"Final price is decided by artisan"
+
+=====================
+LEARNING + TEACHERS
+===================
+
+✔ Add "Learn Section"
+✔ Show courses from artisans
+
+✔ Add "View Teachers"
+✔ Show artisans who selected "Interested in Teaching"
+
+✔ Show:
+
+* Name
+* Skill
+* City
+* Contact button
+
+=====================
+CHAT SYSTEM
+===========
+
+✔ Chat between user & artisan
+✔ Message input + send
+✔ Display messages
+✔ Auto-reply:
+"Artisan will respond soon"
+
+=====================
+EVENTS FEATURE
+==============
+
+✔ Show nearby events based on city
+
+Event details:
+
+* Name
+* Location
+* Date
+* Category
+
+✔ Users:
+
+* View events
+* Book events
+
+✔ Artisans:
+
+* Register for events
+* Showcase products
+
+=====================
+TRUST SYSTEM
+============
+
+✔ Ratings (1–5 stars)
+✔ Reviews
+
+✔ If product disliked:
+
+* User can reduce rating
+
+✔ If trust breaks:
+
+* Reduce rating
+* Show "Low Trust Score"
+* Lower visibility
+
+✔ Verified badge
+
+=====================
+DELETE FEATURE
+==============
+
+✔ Only artisan can delete product
+✔ Instant removal
+✔ Call renderUI()
+
+=====================
+MULTILINGUAL SYSTEM
+===================
+
+Languages:
+English, Hindi, Telugu, Tamil, Marathi, Bengali, Urdu
+
+Create:
+
+function t(text){
+return translations[text]?.[selectedLang] || text;
+}
+
+✔ ALL UI text must use t()
+✔ Voice output must match language
+✔ Chat must be translated
+
+=====================
+RENDER SYSTEM
+=============
+
+Functions:
+
+* renderProducts()
+* renderTeachers()
+* renderLearn()
+* renderChat()
+* renderEvents()
+* renderUI()
+
+Call renderUI() after:
+✔ Login
+✔ Buy
+✔ Rating
+✔ Delete
+✔ Chat
+✔ Language change
+
+=====================
+UI DESIGN
+=========
+
+✔ Mobile-first
+✔ Clean cards
+✔ Proper spacing
+✔ Chat bubbles
+✔ Simple UI
+
+=====================
+FINAL OUTPUT
+============
+
+Generate COMPLETE working code:
+
+✔ Single file index.js
+✔ Fully runnable
+✔ No missing features
+✔ No placeholders
+✔ Clean commented code
+
+Also explain how to run the project.

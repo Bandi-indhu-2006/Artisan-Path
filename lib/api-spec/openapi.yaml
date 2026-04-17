@@ -3,20 +3,35 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: ArtisanPath API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: users
+    description: User operations
+  - name: artisans
+    description: Artisan operations
+  - name: products
+    description: Product operations
+  - name: courses
+    description: Learning courses
+  - name: events
+    description: Events operations
+  - name: chat
+    description: Chat messages
+  - name: ratings
+    description: Ratings and reviews
+  - name: orders
+    description: Order operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +39,427 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /users/login:
+    post:
+      operationId: loginUser
+      tags: [users]
+      summary: Login or register a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginBody"
+      responses:
+        "200":
+          description: User logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /artisans/login:
+    post:
+      operationId: loginArtisan
+      tags: [artisans]
+      summary: Login or register an artisan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtisanLoginBody"
+      responses:
+        "200":
+          description: Artisan logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artisan"
+
+  /artisans:
+    get:
+      operationId: listArtisans
+      tags: [artisans]
+      summary: List all artisans
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: teachingOnly
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of artisans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Artisan"
+
+  /artisans/{id}:
+    get:
+      operationId: getArtisan
+      tags: [artisans]
+      summary: Get artisan by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Artisan found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artisan"
+        "404":
+          description: Not found
+
+  /products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List products
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: subcategory
+          in: query
+          schema:
+            type: string
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: artisanId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Products list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      operationId: createProduct
+      tags: [products]
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductBody"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /products/{id}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteProduct
+      tags: [products]
+      summary: Delete a product (artisan only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /products/stats:
+    get:
+      operationId: getProductStats
+      tags: [products]
+      summary: Product stats - top rated, recent, by category
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductStats"
+
+  /courses:
+    get:
+      operationId: listCourses
+      tags: [courses]
+      summary: List available courses from artisans who teach
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Courses list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+    post:
+      operationId: createCourse
+      tags: [courses]
+      summary: Artisan creates a course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCourseBody"
+      responses:
+        "201":
+          description: Course created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List events
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Events list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /events/{id}/book:
+    post:
+      operationId: bookEvent
+      tags: [events]
+      summary: Book an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookEventBody"
+      responses:
+        "200":
+          description: Booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventBooking"
+
+  /events/{id}/register:
+    post:
+      operationId: registerForEvent
+      tags: [events]
+      summary: Artisan registers for event to showcase
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterEventBody"
+      responses:
+        "200":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventBooking"
+
+  /chat/messages:
+    get:
+      operationId: listMessages
+      tags: [chat]
+      summary: List chat messages for a conversation
+      parameters:
+        - name: artisanId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+    post:
+      operationId: sendMessage
+      tags: [chat]
+      summary: Send a chat message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageBody"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
+
+  /ratings:
+    post:
+      operationId: rateProduct
+      tags: [ratings]
+      summary: Rate a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RateProductBody"
+      responses:
+        "201":
+          description: Rating submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rating"
+
+  /ratings/product/{productId}:
+    get:
+      operationId: getProductRatings
+      tags: [ratings]
+      summary: Get ratings for a product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ratings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rating"
+
+  /orders:
+    post:
+      operationId: placeOrder
+      tags: [orders]
+      summary: Place an order for a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlaceOrderBody"
+      responses:
+        "201":
+          description: Order placed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List orders for a user
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: integer
+        - name: artisanId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +470,480 @@ components:
       required:
         - status
 
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        city:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - city
+        - createdAt
+
+    UserLoginBody:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        city:
+          type: string
+      required:
+        - name
+        - phone
+        - city
+
+    Artisan:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: ["string", "null"]
+        city:
+          type: string
+        availableForTeaching:
+          type: boolean
+        rating:
+          type: number
+        verified:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - category
+        - city
+        - availableForTeaching
+        - rating
+        - verified
+        - createdAt
+
+    ArtisanLoginBody:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        city:
+          type: string
+        availableForTeaching:
+          type: boolean
+      required:
+        - name
+        - category
+        - city
+        - availableForTeaching
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        artisanId:
+          type: integer
+        artisanName:
+          type: string
+        artisanCity:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        descriptionHindi:
+          type: ["string", "null"]
+        descriptionTelugu:
+          type: ["string", "null"]
+        descriptionTamil:
+          type: ["string", "null"]
+        category:
+          type: string
+        subcategory:
+          type: string
+        imageUrl:
+          type: string
+        price:
+          type: number
+        estimatedPriceMin:
+          type: number
+        estimatedPriceMax:
+          type: number
+        city:
+          type: string
+        averageRating:
+          type: number
+        reviewCount:
+          type: integer
+        verified:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - artisanId
+        - artisanName
+        - artisanCity
+        - title
+        - description
+        - category
+        - subcategory
+        - imageUrl
+        - price
+        - estimatedPriceMin
+        - estimatedPriceMax
+        - city
+        - averageRating
+        - reviewCount
+        - verified
+        - createdAt
+
+    CreateProductBody:
+      type: object
+      properties:
+        artisanId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        imageUrl:
+          type: string
+        price:
+          type: number
+        city:
+          type: string
+      required:
+        - artisanId
+        - title
+        - description
+        - category
+        - subcategory
+        - imageUrl
+        - price
+        - city
+
+    ProductStats:
+      type: object
+      properties:
+        topRated:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        recentlyAdded:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        byCategory:
+          type: object
+          additionalProperties:
+            type: integer
+      required:
+        - topRated
+        - recentlyAdded
+        - byCategory
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+        artisanId:
+          type: integer
+        artisanName:
+          type: string
+        artisanCity:
+          type: string
+        artisanRating:
+          type: number
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        durationHours:
+          type: integer
+        price:
+          type: number
+        imageUrl:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - artisanId
+        - artisanName
+        - artisanCity
+        - artisanRating
+        - title
+        - description
+        - category
+        - subcategory
+        - durationHours
+        - price
+        - imageUrl
+        - createdAt
+
+    CreateCourseBody:
+      type: object
+      properties:
+        artisanId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        subcategory:
+          type: string
+        durationHours:
+          type: integer
+        price:
+          type: number
+        imageUrl:
+          type: string
+      required:
+        - artisanId
+        - title
+        - description
+        - category
+        - subcategory
+        - durationHours
+        - price
+        - imageUrl
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        city:
+          type: string
+        date:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        bookingCount:
+          type: integer
+        maxCapacity:
+          type: integer
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - location
+        - city
+        - date
+        - category
+        - description
+        - imageUrl
+        - bookingCount
+        - maxCapacity
+        - createdAt
+
+    BookEventBody:
+      type: object
+      properties:
+        userId:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+      required:
+        - userId
+        - name
+        - phone
+
+    RegisterEventBody:
+      type: object
+      properties:
+        artisanId:
+          type: integer
+      required:
+        - artisanId
+
+    EventBooking:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventId:
+          type: integer
+        userId:
+          type: ["integer", "null"]
+        artisanId:
+          type: ["integer", "null"]
+        type:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - eventId
+        - type
+        - createdAt
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        artisanId:
+          type: integer
+        userId:
+          type: integer
+        senderType:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - artisanId
+        - userId
+        - senderType
+        - message
+        - createdAt
+
+    SendMessageBody:
+      type: object
+      properties:
+        artisanId:
+          type: integer
+        userId:
+          type: integer
+        senderType:
+          type: string
+        message:
+          type: string
+      required:
+        - artisanId
+        - userId
+        - senderType
+        - message
+
+    Rating:
+      type: object
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        userId:
+          type: integer
+        userName:
+          type: string
+        stars:
+          type: integer
+        review:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - productId
+        - userId
+        - userName
+        - stars
+        - review
+        - createdAt
+
+    RateProductBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+        userId:
+          type: integer
+        userName:
+          type: string
+        stars:
+          type: integer
+        review:
+          type: string
+      required:
+        - productId
+        - userId
+        - userName
+        - stars
+        - review
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        userId:
+          type: integer
+        productTitle:
+          type: string
+        productImageUrl:
+          type: string
+        price:
+          type: number
+        status:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - productId
+        - userId
+        - productTitle
+        - productImageUrl
+        - price
+        - status
+        - createdAt
+
+    PlaceOrderBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+        userId:
+          type: integer
+        price:
+          type: number
+      required:
+        - productId
+        - userId
+        - price
