@@ -10,6 +10,11 @@ import {
   GetArtisanResponse,
 } from "@workspace/api-zod";
 
+const toStr = (a: typeof artisansTable.$inferSelect) => ({
+  ...a,
+  createdAt: a.createdAt.toISOString(),
+});
+
 const router: IRouter = Router();
 
 router.post("/artisans/login", async (req, res): Promise<void> => {
@@ -33,7 +38,7 @@ router.post("/artisans/login", async (req, res): Promise<void> => {
       .set({ availableForTeaching, subcategory: subcategory ?? null })
       .where(eq(artisansTable.id, existing[0].id))
       .returning();
-    res.json(LoginArtisanResponse.parse(updated));
+    res.json(LoginArtisanResponse.parse(toStr(updated)));
     return;
   }
 
@@ -42,7 +47,7 @@ router.post("/artisans/login", async (req, res): Promise<void> => {
     .values({ name, category, subcategory: subcategory ?? null, city, availableForTeaching })
     .returning();
 
-  res.json(LoginArtisanResponse.parse(artisan));
+  res.json(LoginArtisanResponse.parse(toStr(artisan)));
 });
 
 router.get("/artisans", async (req, res): Promise<void> => {
@@ -55,22 +60,14 @@ router.get("/artisans", async (req, res): Promise<void> => {
   let query = db.select().from(artisansTable).$dynamic();
   const conditions = [];
 
-  if (params.data.city) {
-    conditions.push(eq(artisansTable.city, params.data.city));
-  }
-  if (params.data.category) {
-    conditions.push(eq(artisansTable.category, params.data.category));
-  }
-  if (params.data.teachingOnly) {
-    conditions.push(eq(artisansTable.availableForTeaching, true));
-  }
+  if (params.data.city) conditions.push(eq(artisansTable.city, params.data.city));
+  if (params.data.category) conditions.push(eq(artisansTable.category, params.data.category));
+  if (params.data.teachingOnly) conditions.push(eq(artisansTable.availableForTeaching, true));
 
-  if (conditions.length > 0) {
-    query = query.where(and(...conditions));
-  }
+  if (conditions.length > 0) query = query.where(and(...conditions));
 
   const artisans = await query;
-  res.json(ListArtisansResponse.parse(artisans));
+  res.json(ListArtisansResponse.parse(artisans.map(toStr)));
 });
 
 router.get("/artisans/:id", async (req, res): Promise<void> => {
@@ -91,7 +88,7 @@ router.get("/artisans/:id", async (req, res): Promise<void> => {
     return;
   }
 
-  res.json(GetArtisanResponse.parse(artisan));
+  res.json(GetArtisanResponse.parse(toStr(artisan)));
 });
 
 export default router;

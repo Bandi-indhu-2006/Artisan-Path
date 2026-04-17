@@ -21,7 +21,7 @@ router.post("/users/login", async (req, res): Promise<void> => {
     .limit(1);
 
   if (existing.length > 0) {
-    res.json(LoginUserResponse.parse(existing[0]));
+    res.json(LoginUserResponse.parse({ ...existing[0], createdAt: existing[0].createdAt.toISOString() }));
     return;
   }
 
@@ -30,7 +30,7 @@ router.post("/users/login", async (req, res): Promise<void> => {
     .values({ name, phone, city })
     .returning();
 
-  res.json(LoginUserResponse.parse(user));
+  res.json(LoginUserResponse.parse({ ...user, createdAt: user.createdAt.toISOString() }));
 });
 
 export default router;
