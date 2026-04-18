@@ -1,0 +1,122 @@
+REPLIT FIX + FEATURE PROMPT
+
+Fix and upgrade my existing ArtisanPath web app (Node.js + Express). Do NOT rewrite from scratch. Modify the current code and ensure everything works end-to-end.
+
+🚨 CRITICAL BUG FIXES
+1. Event Booking Not Working
+Problem: Clicking "Book Event" shows "failed to book"
+Fix completely:
+
+Ensure backend route exists:
+
+app.post('/book-event', ...)
+Ensure frontend sends correct data using fetch()
+Fix JSON parsing (express.json() middleware must be used)
+Store bookings in an array (in-memory)
+Return success response
+Show success message on UI
+2. FULL Language Translation (NOT PARTIAL)
+Problem: Only some words (like navbar) are translating
+Fix so EVERY TEXT ELEMENT changes language
+
+✔ Must translate:
+
+Navbar
+Buttons
+Forms
+Section titles
+Alerts/messages
+Event text
+Profile text
+
+✔ Implementation rules:
+
+Use data-key for ALL text elements
+Create translation object:
+const translations = {
+  en: { book: "Book Event" },
+  hi: { book: "कार्यक्रम बुक करें" },
+  te: { book: "ఈవెంట్ బుక్ చేయండి" }
+};
+Apply using JS:
+function translatePage(lang) {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.innerText = translations[lang][el.dataset.key] || el.innerText;
+  });
+}
+Language change must update WHOLE PAGE instantly
+3. My Events Section Button Not Working
+Problem: "Register" button does nothing
+Fix:
+Add proper click handler
+Pass event ID correctly
+Add event to "My Events" list
+Update UI dynamically (no refresh)
+🚀 NEW FEATURES TO ADD
+4. 🔊 Voice Feature (Profile Section)
+Add button: "Speak Profile"
+Convert profile text to speech
+Use browser API:
+function speakText(text, lang='en-US') {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = lang;
+  speechSynthesis.speak(speech);
+}
+
+✔ Support:
+
+English (en-US)
+Hindi (hi-IN)
+Telugu (te-IN)
+5. 📍 Smart Skill Suggestion (Events Section)
+When user selects a location:
+Show "Popular Skills in this Area"
+
+Example:
+
+const skills = {
+  Hyderabad: ["Handloom", "Jewelry"],
+  Delhi: ["Pottery", "Painting"],
+  Chennai: ["Silk Weaving"]
+};
+Display dynamically in UI
+6. ⭐ Review-Based Skill Ranking
+Add rating system:
+const reviews = [
+  { location: "Hyderabad", skill: "Jewelry", rating: 4.5 },
+  { location: "Hyderabad", skill: "Handloom", rating: 4.8 }
+];
+Show:
+Top-rated skills per location
+Sort by rating (highest first)
+7. 🎟️ Booking Improvement
+After booking:
+Show confirmation message
+Add event to "My Events" automatically
+🎨 UI REQUIREMENTS
+Mobile-first layout
+All buttons must be clickable
+No broken links
+Clean spacing
+Dynamic updates (NO page reloads)
+⚙️ TECH RULES
+Node.js + Express
+HTML, CSS, Vanilla JS ONLY
+No React
+No database (use arrays)
+Keep code simple and beginner-friendly
+✅ FINAL OUTPUT REQUIREMENTS
+Fix bugs WITHOUT breaking existing features
+Ensure:
+Event booking works
+Full translation works
+My Events works
+Voice feature works
+Skill suggestion works
+No console errors
+⚠️ IMPORTANT
+Do NOT leave incomplete code
+Do NOT give explanation only — APPLY fixes in code
+Ensure everything is fully functional
+
+If this still doesn’t fix it, send me your index.js — I’ll debug it line-by-line and give you a working version 👍

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, Edit2, MapPin, Star, Trash2, ImagePlus, CheckCircle } from "lucide-react";
+import { Camera, Edit2, MapPin, Star, Trash2, ImagePlus, CheckCircle, Volume2, VolumeX } from "lucide-react";
 
 type ProfileData = {
   bio: string;
@@ -40,6 +40,7 @@ export default function Profile() {
   const [bio, setBio] = useState("");
   const [gallery, setGallery] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     if (!artisan) { setLocation("/"); return; }
@@ -47,6 +48,26 @@ export default function Profile() {
     setBio(p.bio);
     setGallery(p.galleryImages);
   }, [artisan, setLocation]);
+
+  // Speak profile using Web Speech API
+  const speakProfile = () => {
+    if (!artisan) return;
+    if (isSpeaking) {
+      speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const bioText = bio || "No bio added yet.";
+    const text = `${artisan.name}. ${artisan.category} artisan specialising in ${artisan.subcategory}. Based in ${artisan.city}. ${bioText}`;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-IN';
+    utterance.rate = 0.9;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
+  };
 
   if (!artisan) return null;
 
@@ -121,15 +142,27 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            <Button
-              variant={editing ? "default" : "outline"}
-              size="sm"
-              onClick={() => editing ? handleSave() : setEditing(true)}
-              className="gap-2 self-start sm:self-end"
-            >
-              <Edit2 className="w-4 h-4" />
-              {editing ? t("save") : t("editProfile")}
-            </Button>
+            <div className="flex gap-2 self-start sm:self-end">
+              <Button
+                variant={isSpeaking ? "destructive" : "outline"}
+                size="sm"
+                onClick={speakProfile}
+                className="gap-2"
+                title="Speak Profile"
+              >
+                {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                {isSpeaking ? "Stop" : "Speak Profile"}
+              </Button>
+              <Button
+                variant={editing ? "default" : "outline"}
+                size="sm"
+                onClick={() => editing ? handleSave() : setEditing(true)}
+                className="gap-2"
+              >
+                <Edit2 className="w-4 h-4" />
+                {editing ? t("save") : t("editProfile")}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

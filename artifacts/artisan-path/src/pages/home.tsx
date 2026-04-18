@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/lib/context";
 import { useLoginUser, useLoginArtisan } from "@workspace/api-client-react";
@@ -39,10 +39,12 @@ export default function Home() {
   const [artCity, setArtCity] = useState("");
   const [artTeaching, setArtTeaching] = useState(false);
 
-  if (user || artisan) {
-    setLocation("/shop");
-    return null;
-  }
+  useEffect(() => {
+    if (user) setLocation("/shop");
+    else if (artisan) setLocation("/artisan-dashboard");
+  }, [user, artisan, setLocation]);
+
+  if (user || artisan) return null;
 
   const handleUserLogin = (e: React.FormEvent) => {
     e.preventDefault();
