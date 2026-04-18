@@ -1,10 +1,9 @@
 import { Link, useLocation } from "wouter";
 import { useAuth, useLanguage, SupportedLanguage } from "@/lib/context";
-import { Store, GraduationCap, CalendarDays, LayoutDashboard, Package, UserCircle, MessageCircle } from "lucide-react";
+import { Store, GraduationCap, CalendarDays, LayoutDashboard, Package, UserCircle, MessageCircle, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from "framer-motion";
-import { LogOut } from "lucide-react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { user, artisan, logout } = useAuth();
@@ -24,7 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span className="text-2xl font-serif font-bold text-primary">ArtisanPath</span>
           </Link>
 
-          {/* Desktop nav links */}
+          {/* Desktop nav */}
           {(user || artisan) && (
             <nav className="hidden md:flex items-center gap-1">
               <Link href="/shop">
@@ -42,11 +41,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   {t('events')}
                 </Button>
               </Link>
-              <Link href="/chat">
-                <Button variant="ghost" size="sm" className={location.startsWith('/chat') ? 'text-primary' : 'text-muted-foreground'}>
-                  {t('chat')}
-                </Button>
-              </Link>
+              {/* Chat only for buyers */}
+              {user && (
+                <Link href="/chat">
+                  <Button variant="ghost" size="sm" className={location.startsWith('/chat') ? 'text-primary' : 'text-muted-foreground'}>
+                    {t('chat')}
+                  </Button>
+                </Link>
+              )}
               {artisan ? (
                 <>
                   <Link href="/artisan-dashboard">
@@ -69,7 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               )}
             </nav>
           )}
-          
+
           <div className="flex items-center gap-3">
             <Select value={language} onValueChange={(val) => setLanguage(val as SupportedLanguage)}>
               <SelectTrigger className="w-[90px] border-none bg-muted/50 focus:ring-0 rounded-full h-9 text-sm">
@@ -82,7 +84,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <SelectItem value="ta">TA</SelectItem>
               </SelectContent>
             </Select>
-            
             {(user || artisan) && (
               <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive">
                 <LogOut className="h-5 w-5" />
@@ -104,7 +105,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </motion.div>
       </main>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Nav */}
       {(user || artisan) && (
         <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-border bg-background z-50 px-1 pb-safe">
           <div className="flex justify-around items-center h-16">
@@ -120,10 +121,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <CalendarDays className="h-5 w-5" />
               <span className="text-[9px] font-medium">{t('events')}</span>
             </Link>
-            <Link href="/chat" className={`flex flex-col items-center justify-center flex-1 h-full space-y-1 ${location.startsWith('/chat') ? 'text-primary' : 'text-muted-foreground'}`}>
-              <MessageCircle className="h-5 w-5" />
-              <span className="text-[9px] font-medium">{t('chat')}</span>
-            </Link>
+            {/* Chat only for buyers in mobile nav */}
+            {user && (
+              <Link href="/chat" className={`flex flex-col items-center justify-center flex-1 h-full space-y-1 ${location.startsWith('/chat') ? 'text-primary' : 'text-muted-foreground'}`}>
+                <MessageCircle className="h-5 w-5" />
+                <span className="text-[9px] font-medium">{t('chat')}</span>
+              </Link>
+            )}
             {artisan ? (
               <>
                 <Link href="/artisan-dashboard" className={`flex flex-col items-center justify-center flex-1 h-full space-y-1 ${location.startsWith('/artisan-dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>
